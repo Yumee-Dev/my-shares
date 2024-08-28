@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { VictoryAxis, VictoryCandlestick, VictoryChart } from "victory";
-import { Candle } from "../../App";
+import { Candle } from "App";
 
 interface TickerCardProps {
   data: Candle[];

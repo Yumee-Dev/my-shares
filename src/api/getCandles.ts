@@ -1,4 +1,4 @@
-import { Candle } from "../App";
+import { Candle } from "App";
 
 type RawCandle = [number, number, number, number, number, number, Date, Date];
 

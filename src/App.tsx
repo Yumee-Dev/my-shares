@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import getCandles from "./api/getCandles";
-import getTickers from "./storage/getTickers";
-import TickerCard from "./components/TickerCard/TickerCard";
+import getCandles from "api/getCandles";
+import getTickers from "storage/getTickers";
+import TickerCard from "components/TickerCard/TickerCard";
 
 const today = new Date();
 
