@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import getCandles from "./api/getCandles";
+import getTickers from "./storage/getTickers";
 import TickerCard from "./components/TickerCard/TickerCard";
 
 const today = new Date();
@@ -9,8 +11,6 @@ const lastMonth = new Date(
   today.getDate() - 30,
   today.getHours()
 );
-
-type RawCandle = [number, number, number, number, number, number, Date, Date];
 
 export type Candle = {
   date: Date;
@@ -25,29 +25,13 @@ function App() {
 
   useEffect(() => {
     async function fetchData() {
-      const ticker1 = "SBER";
-      const ticker2 = "MOEX";
-      const ticker3 = "MGNT";
-      const startDate = lastMonth.toISOString().split("T")[0];
-      const endDate = today.toISOString().split("T")[0];
-      const apiUrl = (ticker: string) =>
-        `https://iss.moex.com/iss/engines/stock/markets/shares/securities/${ticker}/candles.json?from=${startDate}&till=${endDate}&interval=24`;
-      const data = await Promise.all([
-        fetch(apiUrl(ticker1)),
-        fetch(apiUrl(ticker2)),
-        fetch(apiUrl(ticker3)),
-      ]);
-      const dataJson = await Promise.all(data.map((d) => d.json()));
+      const fetchedData = await getCandles({
+        startDate: lastMonth,
+        endDate: today,
+        tickers: getTickers(),
+      });
 
-      setData(
-        dataJson.map((item: { candles: { data: RawCandle[] } }) =>
-          item.candles.data.map((rawCandle) => {
-            const [open, close, high, low] = rawCandle;
-
-            return { date: new Date(rawCandle[6]), open, close, high, low };
-          })
-        )
-      );
+      setData(fetchedData);
     }
 
     fetchData();
@@ -55,6 +39,11 @@ function App() {
 
   return (
     <div>
+      <h1>myShares</h1>
+      <h2>
+        Period: <span>{lastMonth.toISOString().split("T")[0]}</span> -&nbsp;
+        <span>{today.toISOString().split("T")[0]}</span>
+      </h2>
       {data.length > 0 && (
         <div style={{ display: "flex" }}>
           {data.map((oneTickerData) => (
