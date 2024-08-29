@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useState, MouseEvent } from "react";
 import { PlusOutlined } from "@ant-design/icons";
-import { Button } from "antd";
+import { Button, ConfigProvider } from "antd";
 import getCandles from "api/getCandles";
 import getTickers from "storage/getTickers";
 import TickerCard from "components/TickerCard/TickerCard";
-import AddNewTicker from "modals/AddNewTicker/AddNewTicker";
+import AddNewTickerModal from "modals/AddNewTickerModal/AddNewTickerModal";
 
 const today = new Date();
 
@@ -54,32 +54,34 @@ function App() {
   };
 
   return (
-    <div>
-      <h1>myShares</h1>
-      <Button
-        type="primary"
-        icon={<PlusOutlined />}
-        onClick={showAddTickerModal}
-      >
-        Add Ticker
-      </Button>
-      <AddNewTicker
-        open={addTickerModalOpen}
-        onOk={handleOk}
-        onCancel={handleCancel}
-      />
-      <h2>
-        Period: <span>{lastMonth.toISOString().split("T")[0]}</span> -&nbsp;
-        <span>{today.toISOString().split("T")[0]}</span>
-      </h2>
-      {data.length > 0 && (
-        <div style={{ display: "flex" }}>
-          {data.map((oneTickerData) => (
-            <TickerCard data={oneTickerData} />
-          ))}
-        </div>
-      )}
-    </div>
+    <ConfigProvider theme={{ token: { colorPrimary: "#ec9706" } }}>
+      <div>
+        <h1>myShares</h1>
+        <Button
+          type="primary"
+          icon={<PlusOutlined />}
+          onClick={showAddTickerModal}
+        >
+          Add Ticker
+        </Button>
+        <AddNewTickerModal
+          open={addTickerModalOpen}
+          onOk={handleOk}
+          onCancel={handleCancel}
+        />
+        <h2>
+          Period: <span>{lastMonth.toISOString().split("T")[0]}</span> -&nbsp;
+          <span>{today.toISOString().split("T")[0]}</span>
+        </h2>
+        {data.length > 0 && (
+          <div style={{ display: "flex" }}>
+            {data.map((oneTickerData) => (
+              <TickerCard data={oneTickerData} />
+            ))}
+          </div>
+        )}
+      </div>
+    </ConfigProvider>
   );
 }
 
