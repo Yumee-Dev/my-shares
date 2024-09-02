@@ -28,14 +28,14 @@ const getCandles = async (params: GetCandlesParams) => {
     responses.map((response) => response.json())
   );
 
-  return jsons.map((json) => {
+  return jsons.map((json, index) => {
     const candles: Candle[] = json.candles.data.map((rawCandle) => {
       const [open, close, high, low] = rawCandle;
 
       return { date: new Date(rawCandle[6]), open, close, high, low };
     });
 
-    return candles;
+    return { ticker: tickers[index], candles };
   });
 };
 

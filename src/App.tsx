@@ -3,6 +3,7 @@ import { PlusOutlined } from "@ant-design/icons";
 import { Button, ConfigProvider } from "antd";
 import getCandles from "api/getCandles";
 import getTickers from "storage/getTickers";
+import useTickersStore from "stores/tickersStore";
 import TickerCard from "components/TickerCard/TickerCard";
 import AddNewTickerModal from "modals/AddNewTickerModal/AddNewTickerModal";
 
@@ -24,22 +25,30 @@ export type Candle = {
 };
 
 function App() {
-  const [data, setData] = useState<Candle[][]>([]);
+  const [data, setData] = useState<{ ticker: string; candles: Candle[] }[]>([]);
   const [addTickerModalOpen, setAddTickerModalOpen] = useState(false);
+  const tickers = useTickersStore((state) => state.tickers);
+  const addTickers = useTickersStore((state) => state.add);
 
   useEffect(() => {
+    addTickers(getTickers());
+  }, [addTickers]);
+
+  useEffect(() => {
+    if (tickers.length === 0) return;
+
     async function fetchData() {
       const fetchedData = await getCandles({
         startDate: lastMonth,
         endDate: today,
-        tickers: getTickers(),
+        tickers,
       });
 
       setData(fetchedData);
     }
 
     fetchData();
-  }, []);
+  }, [tickers]);
 
   const showAddTickerModal = useCallback(() => {
     setAddTickerModalOpen(true);
@@ -76,7 +85,10 @@ function App() {
         {data.length > 0 && (
           <div style={{ display: "flex" }}>
             {data.map((oneTickerData) => (
-              <TickerCard data={oneTickerData} />
+              <TickerCard
+                ticker={oneTickerData.ticker}
+                data={oneTickerData.candles}
+              />
             ))}
           </div>
         )}
