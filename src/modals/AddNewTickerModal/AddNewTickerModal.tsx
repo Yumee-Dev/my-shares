@@ -1,5 +1,6 @@
-import { FC, MouseEvent } from "react";
+import { FC } from "react";
 import { Modal, Form, Input, Space, Button } from "antd";
+import useTickersStore from "stores/tickersStore";
 import SubmitButton from "./elements/SubmitButton";
 
 type FieldType = {
@@ -8,8 +9,8 @@ type FieldType = {
 
 interface AddNewTickerModalProps {
   open: boolean;
-  onOk?: (e: MouseEvent<HTMLButtonElement>) => void;
-  onCancel?: (e: MouseEvent<HTMLButtonElement>) => void;
+  onOk?: () => void;
+  onCancel?: () => void;
 }
 
 const AddNewTickerModal: FC<AddNewTickerModalProps> = ({
@@ -18,20 +19,24 @@ const AddNewTickerModal: FC<AddNewTickerModalProps> = ({
   onCancel,
 }) => {
   const [form] = Form.useForm();
+  const { add: addTicker } = useTickersStore((state) => state);
 
-  const handleOk = (e: MouseEvent<HTMLButtonElement>) => {
-    if (onOk) onOk(e);
+  const handleOk = (values: FieldType) => {
+    if (!values.ticker) return;
+
+    addTicker(values.ticker);
+
+    if (onOk) onOk();
   };
 
-  const handleCancel = (e: MouseEvent<HTMLButtonElement>) => {
-    if (onCancel) onCancel(e);
+  const handleCancel = () => {
+    if (onCancel) onCancel();
   };
 
   return (
     <Modal
       title="Add Ticker"
       open={open}
-      onOk={handleOk}
       onCancel={handleCancel}
       footer={null}
       destroyOnClose

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState, MouseEvent } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { PlusOutlined } from "@ant-design/icons";
 import { Button, ConfigProvider } from "antd";
 import getCandles from "api/getCandles";
@@ -27,8 +27,7 @@ export type Candle = {
 function App() {
   const [data, setData] = useState<{ ticker: string; candles: Candle[] }[]>([]);
   const [addTickerModalOpen, setAddTickerModalOpen] = useState(false);
-  const tickers = useTickersStore((state) => state.tickers);
-  const addTickers = useTickersStore((state) => state.add);
+  const { tickers, add: addTickers } = useTickersStore((state) => state);
 
   useEffect(() => {
     addTickers(getTickers());
@@ -58,7 +57,7 @@ function App() {
     setAddTickerModalOpen(false);
   };
 
-  const handleCancel = (e: MouseEvent<HTMLButtonElement>) => {
+  const handleCancel = () => {
     setAddTickerModalOpen(false);
   };
 
