@@ -4,7 +4,7 @@ import saveTickers from "storage/saveTickers";
 interface TickersState {
   tickers: string[];
   add: (ticker: string | string[]) => void;
-  delete: (ticker: string) => void;
+  remove: (ticker: string) => void;
   clear: () => void;
 }
 
@@ -29,13 +29,22 @@ const useTickersStore = create<TickersState>((set) => ({
 
       return { tickers: newTickers };
     }),
-  delete: (ticker) =>
-    set((state) => ({
-      tickers: state.tickers.filter(
+  remove: (ticker) =>
+    set((state) => {
+      const newTickers = state.tickers.filter(
         (currentTicker) => currentTicker !== ticker
-      ),
-    })),
-  clear: () => set({ tickers: [] }),
+      );
+
+      saveTickers(newTickers);
+
+      return { tickers: newTickers };
+    }),
+  clear: () =>
+    set(() => {
+      saveTickers([]);
+
+      return { tickers: [] };
+    }),
 }));
 
 export default useTickersStore;

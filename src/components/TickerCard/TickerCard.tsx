@@ -1,6 +1,10 @@
 import { FC } from "react";
+import { Flex, Button } from "antd";
+import { CloseCircleOutlined } from "@ant-design/icons";
 import { VictoryAxis, VictoryCandlestick, VictoryChart } from "victory";
 import { Candle } from "App";
+import useTickersStore from "stores/tickersStore";
+import styles from "./TickerCard.module.css";
 
 interface TickerCardProps {
   ticker: string;
@@ -8,9 +12,19 @@ interface TickerCardProps {
 }
 
 const TickerCard: FC<TickerCardProps> = ({ ticker, data }) => {
+  const { remove } = useTickersStore((state) => state);
+
   return (
-    <div>
-      <h3>{ticker}</h3>
+    <li className={styles.card}>
+      <Flex component="header" justify="space-between">
+        <h3>{ticker}</h3>
+        <Button
+          shape="circle"
+          icon={<CloseCircleOutlined />}
+          onClick={() => remove(ticker)}
+        />
+      </Flex>
+
       <VictoryChart domainPadding={10}>
         <VictoryAxis
           tickFormat={(t: number) =>
@@ -32,7 +46,7 @@ const TickerCard: FC<TickerCardProps> = ({ ticker, data }) => {
           candleColors={{ positive: "#7fab0f", negative: "#c9574b" }}
         />
       </VictoryChart>
-    </div>
+    </li>
   );
 };
 

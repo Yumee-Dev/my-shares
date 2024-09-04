@@ -82,14 +82,14 @@ function App() {
           <span>{today.toISOString().split("T")[0]}</span>
         </h2>
         {data.length > 0 && (
-          <div style={{ display: "flex" }}>
+          <ul style={{ display: "flex", listStyleType: "none", gap: 10 }}>
             {data.map((oneTickerData) => (
               <TickerCard
                 ticker={oneTickerData.ticker}
                 data={oneTickerData.candles}
               />
             ))}
-          </div>
+          </ul>
         )}
       </div>
     </ConfigProvider>
