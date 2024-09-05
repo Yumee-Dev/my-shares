@@ -1,4 +1,4 @@
-import { Candle } from "App";
+import type { Candle } from "typings";
 
 type RawCandle = [number, number, number, number, number, number, Date, Date];
 

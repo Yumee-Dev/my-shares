@@ -2,9 +2,10 @@ import { FC } from "react";
 import { Flex, Button } from "antd";
 import { CloseCircleOutlined } from "@ant-design/icons";
 import { VictoryAxis, VictoryCandlestick, VictoryChart } from "victory";
-import { Candle } from "App";
 import useTickersStore from "stores/tickersStore";
 import styles from "./TickerCard.module.css";
+
+import type { Candle } from "typings";
 
 interface TickerCardProps {
   ticker: string;
