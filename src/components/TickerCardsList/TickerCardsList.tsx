@@ -1,22 +1,25 @@
+import { Col, Row } from "antd";
 import TickerCard from "components/TickerCard/TickerCard";
 
 import type { FC } from "react";
-import type { Candle } from "typings";
+import type { TickerData } from "typings";
 
 interface TickerCardsListProps {
-  data: { ticker: string; candles: Candle[] }[];
+  data: TickerData[];
 }
 
 const TickerCardsList: FC<TickerCardsListProps> = ({ data }) => {
   return (
-    <ul style={{ display: "flex", listStyleType: "none", gap: 10 }}>
+    <Row gutter={[16, 16]}>
       {data.map((oneTickerData) => (
-        <TickerCard
-          ticker={oneTickerData.ticker}
-          data={oneTickerData.candles}
-        />
+        <Col sm={24} md={12} xl={8}>
+          <TickerCard
+            ticker={oneTickerData.ticker}
+            data={oneTickerData.candles}
+          />
+        </Col>
       ))}
-    </ul>
+    </Row>
   );
 };
 

@@ -16,7 +16,7 @@ const TickerCard: FC<TickerCardProps> = ({ ticker, data }) => {
   const { remove } = useTickersStore((state) => state);
 
   return (
-    <li className={styles.card}>
+    <div className={styles.card}>
       <Flex component="header" justify="space-between">
         <h3>{ticker}</h3>
         <Button
@@ -47,7 +47,7 @@ const TickerCard: FC<TickerCardProps> = ({ ticker, data }) => {
           candleColors={{ positive: "#7fab0f", negative: "#c9574b" }}
         />
       </VictoryChart>
-    </li>
+    </div>
   );
 };
 

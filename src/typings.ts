@@ -5,3 +5,8 @@ export type Candle = {
   high: number;
   low: number;
 };
+
+export type TickerData = {
+  ticker: string;
+  candles: Candle[];
+};

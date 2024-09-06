@@ -4,10 +4,10 @@ import getTickers from "storage/getTickers";
 import useTickersStore from "stores/tickersStore";
 import { lastMonth, today } from "data";
 
-import type { Candle } from "typings";
+import type { TickerData } from "typings";
 
 export default function useCandles() {
-  const [data, setData] = useState<{ ticker: string; candles: Candle[] }[]>([]);
+  const [data, setData] = useState<TickerData[]>([]);
   const { tickers, add: addTickers } = useTickersStore((state) => state);
 
   useEffect(() => {
