@@ -1,31 +1,29 @@
 import { FC } from "react";
-import { Flex, Button } from "antd";
+import { Button, Card } from "antd";
 import { CloseCircleOutlined } from "@ant-design/icons";
 import { VictoryAxis, VictoryCandlestick, VictoryChart } from "victory";
 import useTickersStore from "stores/tickersStore";
-import styles from "./TickerCard.module.css";
 
-import type { Candle } from "typings";
+import type { TickerData } from "typings";
 
 interface TickerCardProps {
-  ticker: string;
-  data: Candle[];
+  tickerData: TickerData;
 }
 
-const TickerCard: FC<TickerCardProps> = ({ ticker, data }) => {
+const TickerCard: FC<TickerCardProps> = ({ tickerData }) => {
   const { remove } = useTickersStore((state) => state);
 
   return (
-    <div className={styles.card}>
-      <Flex component="header" justify="space-between">
-        <h3>{ticker}</h3>
+    <Card
+      title={tickerData.ticker}
+      extra={
         <Button
           shape="circle"
           icon={<CloseCircleOutlined />}
-          onClick={() => remove(ticker)}
+          onClick={() => remove(tickerData.ticker)}
         />
-      </Flex>
-
+      }
+    >
       <VictoryChart domainPadding={10}>
         <VictoryAxis
           tickFormat={(t: number) =>
@@ -42,12 +40,12 @@ const TickerCard: FC<TickerCardProps> = ({ ticker, data }) => {
           style={{ tickLabels: { fontSize: 10, padding: 5 } }}
         />
         <VictoryCandlestick
-          data={data}
+          data={tickerData.candles}
           x="date"
           candleColors={{ positive: "#7fab0f", negative: "#c9574b" }}
         />
       </VictoryChart>
-    </div>
+    </Card>
   );
 };
 

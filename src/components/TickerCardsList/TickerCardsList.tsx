@@ -11,12 +11,9 @@ interface TickerCardsListProps {
 const TickerCardsList: FC<TickerCardsListProps> = ({ data }) => {
   return (
     <Row gutter={[16, 16]}>
-      {data.map((oneTickerData) => (
+      {data.map((tickerData) => (
         <Col sm={24} md={12} xl={8}>
-          <TickerCard
-            ticker={oneTickerData.ticker}
-            data={oneTickerData.candles}
-          />
+          <TickerCard tickerData={tickerData} />
         </Col>
       ))}
     </Row>
