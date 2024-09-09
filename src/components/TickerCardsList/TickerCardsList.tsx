@@ -1,14 +1,16 @@
 import { Col, Row } from "antd";
 import TickerCard from "components/TickerCard/TickerCard";
+import useCandles from "hooks/useCandles";
 
 import type { FC } from "react";
-import type { TickerData } from "typings";
 
-interface TickerCardsListProps {
-  data: TickerData[];
-}
+const TickerCardsList: FC = () => {
+  const { status, data } = useCandles();
 
-const TickerCardsList: FC<TickerCardsListProps> = ({ data }) => {
+  if (status === "loading") return <div>Loading...</div>;
+
+  if (data.length === 0) return <div>No tickers added. Try to add one.</div>;
+
   return (
     <Row gutter={[16, 16]}>
       {data.map((tickerData) => (

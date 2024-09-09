@@ -6,8 +6,16 @@ import { lastMonth, today } from "data";
 
 import type { TickerData } from "typings";
 
+type UseCandlesState = {
+  status: "loading" | "idle";
+  data: TickerData[];
+};
+
 export default function useCandles() {
-  const [data, setData] = useState<TickerData[]>([]);
+  const [data, setData] = useState<UseCandlesState>({
+    status: "idle",
+    data: [],
+  });
   const { tickers, add: addTickers } = useTickersStore((state) => state);
 
   useEffect(() => {
@@ -24,9 +32,10 @@ export default function useCandles() {
         tickers,
       });
 
-      setData(fetchedData);
+      setData((prev) => ({ status: "idle", data: fetchedData }));
     }
 
+    setData((prev) => ({ status: "loading", data: prev.data }));
     fetchData();
   }, [tickers]);
 

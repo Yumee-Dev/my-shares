@@ -17,6 +17,8 @@ interface GetCandlesParams {
 const getCandles = async (params: GetCandlesParams) => {
   const { startDate, endDate, tickers } = params;
 
+  if (tickers.length === 0) return [];
+
   const start = startDate.toISOString().split("T")[0];
   const end = endDate.toISOString().split("T")[0];
   const url = (ticker: string) =>

@@ -3,9 +3,15 @@ const defaultTickers = ["SBER", "MOEX", "MGNT"];
 const getTickers = () => {
   const tickers = localStorage.getItem("tickers")?.split(",");
 
-  if (!tickers) localStorage.setItem("tickers", defaultTickers.join(","));
+  if (!tickers) {
+    localStorage.setItem("tickers", defaultTickers.join(","));
 
-  return tickers || defaultTickers;
+    return defaultTickers;
+  }
+
+  if (tickers[0] === "") return [];
+
+  return tickers;
 };
 
 export default getTickers;
