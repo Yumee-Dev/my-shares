@@ -3,6 +3,7 @@ import { PlusOutlined } from "@ant-design/icons";
 import { Button } from "antd";
 import AddNewTickerModal from "modals/AddNewTickerModal/AddNewTickerModal";
 import { lastMonth, today } from "data";
+import styles from "./Header.module.css";
 
 import type { FC } from "react";
 
@@ -13,8 +14,10 @@ const Header: FC = () => {
   const handleCancel = () => setAddTickerModalOpen(false);
 
   return (
-    <div>
-      <h1>myShares</h1>
+    <header className={styles.header}>
+      <div className={styles.topline}>
+        <h1>myShares</h1>
+      </div>
       <Button
         type="primary"
         icon={<PlusOutlined />}
@@ -31,7 +34,7 @@ const Header: FC = () => {
         Period: <span>{lastMonth.toISOString().split("T")[0]}</span> -&nbsp;
         <span>{today.toISOString().split("T")[0]}</span>
       </h2>
-    </div>
+    </header>
   );
 };
 
