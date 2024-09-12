@@ -1,11 +1,11 @@
 import { Col, Row } from "antd";
 import TickerCard from "components/TickerCard/TickerCard";
-import useCandles from "hooks/useCandles";
+import useCandlesData from "hooks/useCandlesData";
 
 import type { FC } from "react";
 
 const TickerCardsList: FC = () => {
-  const { status, data } = useCandles();
+  const { status, data } = useCandlesData();
 
   if (status === "loading") return <div>Loading...</div>;
 
