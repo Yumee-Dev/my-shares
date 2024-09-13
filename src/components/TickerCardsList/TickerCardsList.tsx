@@ -14,7 +14,7 @@ const TickerCardsList: FC = () => {
   return (
     <Row gutter={[16, 16]}>
       {data.map((tickerData) => (
-        <Col sm={24} md={12} xl={8}>
+        <Col key={tickerData.ticker} sm={24} md={12} xl={8}>
           <TickerCard tickerData={tickerData} />
         </Col>
       ))}

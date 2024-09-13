@@ -4,7 +4,7 @@ import { CloseCircleOutlined } from "@ant-design/icons";
 import { VictoryAxis, VictoryCandlestick, VictoryChart } from "victory";
 import useTickersStore from "stores/tickersStore";
 
-import type { TickerData } from "typings";
+import type { TickerData } from "types";
 
 interface TickerCardProps {
   tickerData: TickerData;

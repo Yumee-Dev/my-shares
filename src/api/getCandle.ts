@@ -1,10 +1,4 @@
-type RawCandle = [number, number, number, number, number, number, Date, Date];
-
-interface RawData {
-  candles: {
-    data: RawCandle[];
-  };
-}
+import type { RawData } from "api/types";
 
 interface GetCandleParams {
   startDate: Date;

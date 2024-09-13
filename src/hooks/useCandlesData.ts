@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import getTickers from "storage/getTickers";
 import useTickersStore from "stores/tickersStore";
 import useCandles from "queries/useCandles";
 import { lastMonth, today } from "data";
 
-import type { TickerData } from "typings";
+import type { TickerData } from "types";
 
 type UseCandlesState = {
   status: "loading" | "idle";
@@ -16,6 +16,7 @@ export default function useCandlesData() {
     status: "idle",
     data: [],
   });
+  const prevTickersLength = useRef(0);
   const { tickers, add: addTickers } = useTickersStore((state) => state);
   const candles = useCandles({ tickers, startDate: lastMonth, endDate: today });
 
@@ -24,17 +25,20 @@ export default function useCandlesData() {
   }, [addTickers]);
 
   useEffect(() => {
-    if (tickers.length === 0) return;
+    if (tickers.length !== prevTickersLength.current) {
+      setData((prev) => ({ status: "loading", data: prev.data }));
+      prevTickersLength.current = tickers.length;
+    }
+  }, [tickers.length]);
 
-    setData((prev) => ({ status: "loading", data: prev.data }));
-
-    if (!candles.success) return;
-
-    setData(() => ({
-      status: "idle",
-      data: candles.data,
-    }));
-  }, [candles.data, candles.success, tickers.length]);
+  useEffect(() => {
+    if (candles.isSuccess && data.status === "loading") {
+      setData(() => ({
+        status: "idle",
+        data: candles.data,
+      }));
+    }
+  }, [candles.data, candles.isSuccess, data.status]);
 
   return data;
 }
