@@ -1,24 +1,20 @@
-import type { RawData } from "api/types";
+import type { CandlesRawData } from "api/types";
 
-interface GetCandleParams {
+interface GetCandlesParams {
   startDate: Date;
   endDate: Date;
   ticker: string;
 }
 
-export default async function getCandle(params: GetCandleParams) {
-  console.log("getCandle invocation");
-
+export default async function getCandles(params: GetCandlesParams) {
   const { startDate, endDate, ticker } = params;
-
-  console.log([ticker, startDate.toDateString(), endDate.toDateString()]);
 
   const start = startDate.toISOString().split("T")[0];
   const end = endDate.toISOString().split("T")[0];
   const url = `https://iss.moex.com/iss/engines/stock/markets/shares/securities/${ticker}/candles.json?from=${start}&till=${end}&interval=24`;
 
   const response = await fetch(url);
-  const json: RawData = await response.json();
+  const json: CandlesRawData = await response.json();
 
   return json;
 }

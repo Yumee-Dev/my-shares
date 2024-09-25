@@ -1,9 +1,9 @@
 import { useQueries } from "@tanstack/react-query";
-import getCandle from "api/getCandle";
+import getCandles from "api/getCandles";
 
 import type { UseQueryOptions } from "@tanstack/react-query";
 import type { Candle } from "types";
-import type { RawData } from "api/types";
+import type { CandlesRawData } from "api/types";
 
 interface UseCandlesParams {
   startDate: Date;
@@ -14,9 +14,14 @@ interface UseCandlesParams {
 export default function useCandles(params: UseCandlesParams) {
   const { startDate, endDate, tickers } = params;
 
-  const queries: UseQueryOptions<RawData>[] = tickers.map((ticker) => ({
-    queryKey: [ticker, startDate.toDateString(), endDate.toDateString()],
-    queryFn: () => getCandle({ ticker, startDate, endDate }),
+  const queries: UseQueryOptions<CandlesRawData>[] = tickers.map((ticker) => ({
+    queryKey: [
+      "candles",
+      ticker,
+      startDate.toDateString(),
+      endDate.toDateString(),
+    ],
+    queryFn: () => getCandles({ ticker, startDate, endDate }),
     staleTime: 1000 * 60 * 30,
   }));
 
