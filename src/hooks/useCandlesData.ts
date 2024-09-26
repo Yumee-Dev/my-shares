@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import getTickers from "storage/getTickers";
 import useTickersStore from "stores/tickersStore";
 import useCandles from "queries/useCandles";
 import { lastMonth, today } from "data";
@@ -17,12 +16,8 @@ export default function useCandlesData() {
     data: [],
   });
   const prevTickersLength = useRef(0);
-  const { tickers, add: addTickers } = useTickersStore((state) => state);
+  const { tickers } = useTickersStore((state) => state);
   const candles = useCandles({ tickers, startDate: lastMonth, endDate: today });
-
-  useEffect(() => {
-    addTickers(getTickers());
-  }, [addTickers]);
 
   useEffect(() => {
     if (tickers.length !== prevTickersLength.current) {

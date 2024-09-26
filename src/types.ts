@@ -10,3 +10,8 @@ export type TickerData = {
   ticker: string;
   candles: Candle[];
 };
+
+export type TickerInfo = {
+  ticker: string;
+  name: string;
+};

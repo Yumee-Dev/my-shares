@@ -1,7 +1,10 @@
-import { FC } from "react";
-import { Modal, Form, Input, Space, Button } from "antd";
+import { useEffect, useState } from "react";
+import { Modal, Form, AutoComplete, Space, Button } from "antd";
 import useTickersStore from "stores/tickersStore";
 import SubmitButton from "./elements/SubmitButton";
+
+import type { FC } from "react";
+import type { AutoCompleteProps } from "antd";
 
 type FieldType = {
   ticker?: string;
@@ -19,18 +22,31 @@ const AddNewTickerModal: FC<AddNewTickerModalProps> = ({
   onCancel,
 }) => {
   const [form] = Form.useForm();
-  const { add: addTicker } = useTickersStore((state) => state);
+  const { add: addTicker, tickersDictionary } = useTickersStore(
+    (state) => state
+  );
+  const [options, setOptions] = useState<AutoCompleteProps["options"]>(
+    tickersDictionary.map((currentTicker) => ({ value: currentTicker.ticker }))
+  );
 
   const handleOk = (values: FieldType) => {
     if (!values.ticker) return;
 
-    addTicker(values.ticker);
+    addTicker(values.ticker.toUpperCase());
 
     if (onOk) onOk();
   };
 
   const handleCancel = () => {
     if (onCancel) onCancel();
+  };
+
+  const handleSearch = (text: string) => {
+    setOptions(
+      tickersDictionary
+        .map((currentTicker) => ({ value: currentTicker.ticker }))
+        .filter((option) => option.value.startsWith(text.toUpperCase()))
+    );
   };
 
   return (
@@ -57,7 +73,7 @@ const AddNewTickerModal: FC<AddNewTickerModalProps> = ({
             { required: true, min: 2, message: "Please input a ticker!" },
           ]}
         >
-          <Input />
+          <AutoComplete options={options} onSearch={handleSearch} />
         </Form.Item>
         <Form.Item>
           <Space>

@@ -1,11 +1,15 @@
 import { create } from "zustand";
 import saveTickers from "storage/saveTickers";
 
+import type { TickerInfo } from "types";
+
 interface TickersState {
   tickers: string[];
   add: (ticker: string | string[]) => void;
   remove: (ticker: string) => void;
   clear: () => void;
+  tickersDictionary: TickerInfo[];
+  initDictionary: (tickers: TickerInfo[]) => void;
 }
 
 const useTickersStore = create<TickersState>((set) => ({
@@ -45,6 +49,8 @@ const useTickersStore = create<TickersState>((set) => ({
 
       return { tickers: [] };
     }),
+  tickersDictionary: [],
+  initDictionary: (tickers) => set(() => ({ tickersDictionary: tickers })),
 }));
 
 export default useTickersStore;

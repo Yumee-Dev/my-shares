@@ -6,7 +6,17 @@ export default function useTickers() {
     queryKey: ["tickers"],
     queryFn: getTickers,
     staleTime: 1000 * 60 * 60 * 24,
-    select: (data) =>
-      data.securities.data.map((raw) => ({ ticker: raw[0], name: raw[9] })),
+    select: (data) => {
+      const tickersMap: Map<string, string> = new Map();
+
+      data.securities.data.forEach((raw) => {
+        tickersMap.set(raw[0], raw[9]);
+      });
+
+      return Array.from(tickersMap).map(([key, value]) => ({
+        ticker: key,
+        name: value,
+      }));
+    },
   });
 }
