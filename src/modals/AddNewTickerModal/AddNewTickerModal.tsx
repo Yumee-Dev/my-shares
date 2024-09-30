@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Modal, Form, AutoComplete, Space, Button } from "antd";
 import useTickersStore from "stores/tickersStore";
 import SubmitButton from "./elements/SubmitButton";
@@ -70,7 +70,14 @@ const AddNewTickerModal: FC<AddNewTickerModalProps> = ({
           label="Enter ticker"
           name="ticker"
           rules={[
-            { required: true, min: 2, message: "Please input a ticker!" },
+            {
+              required: true,
+              min: 2,
+              pattern: new RegExp(
+                `${tickersDictionary.map((ticker) => ticker.ticker).join("|")}`
+              ),
+              message: "Please input a ticker!",
+            },
           ]}
         >
           <AutoComplete options={options} onSearch={handleSearch} />
