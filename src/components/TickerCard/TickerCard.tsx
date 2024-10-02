@@ -1,9 +1,16 @@
-import { FC } from "react";
 import { Button, Card } from "antd";
 import { CloseCircleOutlined } from "@ant-design/icons";
-import { VictoryAxis, VictoryCandlestick, VictoryChart } from "victory";
-import useTickersStore from "stores/tickersStore";
+import {
+  VictoryAxis,
+  VictoryCandlestick,
+  VictoryChart,
+  VictoryTooltip,
+} from "victory";
 
+import useTickersStore from "stores/tickersStore";
+import formatDate from "utils/formatDate";
+
+import type { FC } from "react";
 import type { TickerData } from "types";
 
 interface TickerCardProps {
@@ -26,13 +33,7 @@ const TickerCard: FC<TickerCardProps> = ({ tickerData }) => {
     >
       <VictoryChart domainPadding={10}>
         <VictoryAxis
-          tickFormat={(t: number) =>
-            `${new Date(t).toLocaleDateString("ru-RU", {
-              year: "numeric",
-              month: "2-digit",
-              day: "2-digit",
-            })}`
-          }
+          tickFormat={(t: number) => formatDate(t)}
           style={{ tickLabels: { fontSize: 10, padding: 5 } }}
         />
         <VictoryAxis
@@ -40,9 +41,18 @@ const TickerCard: FC<TickerCardProps> = ({ tickerData }) => {
           style={{ tickLabels: { fontSize: 10, padding: 5 } }}
         />
         <VictoryCandlestick
-          data={tickerData.candles}
+          data={tickerData.candles.map((candle) => ({
+            ...candle,
+            label: `${formatDate(candle.date)}\n${" "}\nOpen: ${
+              candle.open
+            }\nClose: ${candle.close}\nHigh: ${candle.high}\nLow: ${
+              candle.low
+            }`,
+          }))}
+          labels={() => ""}
           x="date"
           candleColors={{ positive: "#7fab0f", negative: "#c9574b" }}
+          labelComponent={<VictoryTooltip />}
         />
       </VictoryChart>
     </Card>
