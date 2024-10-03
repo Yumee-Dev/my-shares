@@ -8,3 +8,11 @@
   background-color: #f4e6cf;
   color: #8a5604;
 }
+
+.subheader {
+  padding: 0 var(--space-xs);
+}
+
+h2 {
+  margin-top: var(--space-xs);
+}
