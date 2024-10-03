@@ -1,6 +1,8 @@
 import { Col, Row } from "antd";
+
 import TickerCard from "components/TickerCard/TickerCard";
 import useCandlesData from "hooks/useCandlesData";
+import styles from "./TickerCardsList.module.css";
 
 import type { FC } from "react";
 
@@ -12,13 +14,15 @@ const TickerCardsList: FC = () => {
   if (data.length === 0) return <div>No tickers added. Try to add one.</div>;
 
   return (
-    <Row gutter={[16, 16]}>
-      {data.map((tickerData) => (
-        <Col key={tickerData.ticker} sm={24} md={12} xl={8}>
-          <TickerCard tickerData={tickerData} />
-        </Col>
-      ))}
-    </Row>
+    <div className={styles.container}>
+      <Row gutter={[16, 16]}>
+        {data.map((tickerData) => (
+          <Col key={tickerData.ticker} sm={24} md={12} xl={8}>
+            <TickerCard tickerData={tickerData} />
+          </Col>
+        ))}
+      </Row>
+    </div>
   );
 };
 
