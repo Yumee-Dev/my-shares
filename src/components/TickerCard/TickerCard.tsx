@@ -6,6 +6,8 @@ import {
   VictoryChart,
   VictoryTooltip,
 } from "victory";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 
 import useTickersStore from "stores/tickersStore";
 import formatDate from "utils/formatDate";
@@ -14,10 +16,17 @@ import type { FC } from "react";
 import type { TickerData } from "types";
 
 interface TickerCardProps {
+  id: string;
   tickerData: TickerData;
 }
 
-const TickerCard: FC<TickerCardProps> = ({ tickerData }) => {
+const TickerCard: FC<TickerCardProps> = ({ id, tickerData }) => {
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({ id });
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
   const { remove } = useTickersStore((state) => state);
 
   return (
@@ -30,6 +39,10 @@ const TickerCard: FC<TickerCardProps> = ({ tickerData }) => {
           onClick={() => remove(tickerData.ticker)}
         />
       }
+      ref={setNodeRef}
+      style={style}
+      {...attributes}
+      {...listeners}
     >
       <VictoryChart domainPadding={10}>
         <VictoryAxis

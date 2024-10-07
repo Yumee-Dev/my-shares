@@ -1,13 +1,47 @@
+import { useEffect, useState } from "react";
 import { Col, Row } from "antd";
+import { DndContext } from "@dnd-kit/core";
+import { SortableContext, arrayMove } from "@dnd-kit/sortable";
 
 import TickerCard from "components/TickerCard/TickerCard";
 import useCandlesData from "hooks/useCandlesData";
 import styles from "./TickerCardsList.module.css";
 
 import type { FC } from "react";
+import type { DragEndEvent } from "@dnd-kit/core";
 
 const TickerCardsList: FC = () => {
   const { status, data } = useCandlesData();
+  const [tickers, setTickers] = useState(
+    data.map((tickerData) => ({
+      ...tickerData,
+      id: tickerData.ticker,
+    }))
+  );
+
+  function handleDragEnd(event: DragEndEvent) {
+    const { active, over } = event;
+
+    if (!over) return;
+
+    if (active.id !== over.id) {
+      setTickers((prev) => {
+        const oldIndex = prev.findIndex((ticker) => ticker.id === active.id);
+        const newIndex = prev.findIndex((ticker) => ticker.id === over.id);
+
+        return arrayMove(prev, oldIndex, newIndex);
+      });
+    }
+  }
+
+  useEffect(() => {
+    setTickers(
+      data.map((tickerData) => ({
+        ...tickerData,
+        id: tickerData.ticker,
+      }))
+    );
+  }, [data]);
 
   if (status === "loading") return <div>Loading...</div>;
 
@@ -15,13 +49,17 @@ const TickerCardsList: FC = () => {
 
   return (
     <div className={styles.container}>
-      <Row gutter={[16, 16]}>
-        {data.map((tickerData) => (
-          <Col key={tickerData.ticker} sm={24} md={12} xl={8}>
-            <TickerCard tickerData={tickerData} />
-          </Col>
-        ))}
-      </Row>
+      <DndContext onDragEnd={handleDragEnd}>
+        <SortableContext items={tickers}>
+          <Row gutter={[16, 16]}>
+            {tickers.map((ticker) => (
+              <Col key={ticker.ticker} sm={24} md={12} xl={8}>
+                <TickerCard id={ticker.ticker} tickerData={ticker} />
+              </Col>
+            ))}
+          </Row>
+        </SortableContext>
+      </DndContext>
     </div>
   );
 };
