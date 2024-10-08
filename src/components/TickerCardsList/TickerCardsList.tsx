@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { Col, Row } from "antd";
+import { Col, Row, Flex, Spin } from "antd";
+import { LoadingOutlined } from "@ant-design/icons";
 import { DndContext } from "@dnd-kit/core";
 import { SortableContext, arrayMove } from "@dnd-kit/sortable";
 
@@ -53,7 +54,12 @@ const TickerCardsList: FC = () => {
     );
   }, [data]);
 
-  if (status === "loading") return <div>Loading...</div>;
+  if (status === "loading")
+    return (
+      <Flex justify="center">
+        <Spin indicator={<LoadingOutlined spin />} size="large" />
+      </Flex>
+    );
 
   if (data.length === 0) return <div>No tickers added. Try to add one.</div>;
 
