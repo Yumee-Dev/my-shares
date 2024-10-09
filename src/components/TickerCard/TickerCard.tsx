@@ -18,11 +18,16 @@ import type { TickerData } from "types";
 interface TickerCardProps {
   id: string;
   tickerData: TickerData;
+  dragAndDropDisabled: boolean;
 }
 
-const TickerCard: FC<TickerCardProps> = ({ id, tickerData }) => {
+const TickerCard: FC<TickerCardProps> = ({
+  id,
+  tickerData,
+  dragAndDropDisabled,
+}) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id });
+    useSortable({ id, disabled: dragAndDropDisabled });
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,

@@ -21,6 +21,7 @@ const TickerCardsList: FC = () => {
       id: tickerData.ticker,
     }))
   );
+  const [dragAndDropDisabled, setDragAndDropDisabled] = useState(true);
 
   function handleDragEnd(event: DragEndEvent) {
     const { active, over } = event;
@@ -54,6 +55,11 @@ const TickerCardsList: FC = () => {
     );
   }, [data]);
 
+  useEffect(() => {
+    if (matchMedia("(min-width: 1200px)").matches)
+      setDragAndDropDisabled(false);
+  }, []);
+
   if (status === "loading")
     return (
       <Flex justify="center">
@@ -70,7 +76,11 @@ const TickerCardsList: FC = () => {
           <Row gutter={[16, 16]}>
             {tickers.map((ticker) => (
               <Col key={ticker.ticker} sm={24} md={12} xl={8}>
-                <TickerCard id={ticker.ticker} tickerData={ticker} />
+                <TickerCard
+                  id={ticker.ticker}
+                  tickerData={ticker}
+                  dragAndDropDisabled={dragAndDropDisabled}
+                />
               </Col>
             ))}
           </Row>
