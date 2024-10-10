@@ -1,20 +1,17 @@
-import { useState } from "react";
 import { PlusOutlined } from "@ant-design/icons";
 import { Button } from "antd";
 
-import AddNewTickerModal from "modals/AddNewTickerModal/AddNewTickerModal";
 import formatDate from "utils/formatDate";
 import { lastMonth, today } from "data";
 import styles from "./Header.module.css";
 
-import type { FC } from "react";
+import type { FC, Dispatch, SetStateAction } from "react";
 
-const Header: FC = () => {
-  const [addTickerModalOpen, setAddTickerModalOpen] = useState(false);
-  const showAddTickerModal = () => setAddTickerModalOpen(true);
-  const handleOk = () => setAddTickerModalOpen(false);
-  const handleCancel = () => setAddTickerModalOpen(false);
+interface HeaderProps {
+  setAddTickerModalOpen: Dispatch<SetStateAction<boolean>>;
+}
 
+const Header: FC<HeaderProps> = ({ setAddTickerModalOpen }) => {
   return (
     <header className={styles.header}>
       <div className={styles.topline}>
@@ -24,15 +21,11 @@ const Header: FC = () => {
         <Button
           type="primary"
           icon={<PlusOutlined />}
-          onClick={showAddTickerModal}
+          onClick={() => setAddTickerModalOpen(true)}
         >
           Add Ticker
         </Button>
-        <AddNewTickerModal
-          open={addTickerModalOpen}
-          onOk={handleOk}
-          onCancel={handleCancel}
-        />
+
         <h2>
           Period: <span>{formatDate(lastMonth)}</span> -&nbsp;
           <span>{formatDate(today)}</span>
