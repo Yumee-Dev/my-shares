@@ -1,0 +1,9 @@
+.addTickerButton {
+  opacity: 1;
+  transition: all 0.3s ease-in-out;
+
+  &.hidden {
+    opacity: 0;
+    transform: translateY(150px);
+  }
+}
