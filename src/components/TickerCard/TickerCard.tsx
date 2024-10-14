@@ -5,6 +5,7 @@ import {
   VictoryCandlestick,
   VictoryChart,
   VictoryTooltip,
+  VictoryContainer,
 } from "victory";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
@@ -49,7 +50,16 @@ const TickerCard: FC<TickerCardProps> = ({
       {...attributes}
       {...listeners}
     >
-      <VictoryChart domainPadding={10}>
+      <VictoryChart
+        domainPadding={10}
+        containerComponent={
+          <VictoryContainer
+            style={{
+              touchAction: "auto",
+            }}
+          />
+        }
+      >
         <VictoryAxis
           tickFormat={(t: number) => formatDate(t)}
           style={{ tickLabels: { fontSize: 10, padding: 5 } }}
