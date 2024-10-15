@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Modal, Form, AutoComplete, Space, Button } from "antd";
 import useTickersStore from "stores/tickersStore";
 import SubmitButton from "./elements/SubmitButton";
+import styles from "./AddNewTickerModal.module.css";
 
 import type { FC } from "react";
 import type { AutoCompleteProps } from "antd";
@@ -28,6 +29,7 @@ const AddNewTickerModal: FC<AddNewTickerModalProps> = ({
   const [options, setOptions] = useState<AutoCompleteProps["options"]>(
     tickersDictionary.map((currentTicker) => ({ value: currentTicker.ticker }))
   );
+  const [tickerInfo, setTickerInfo] = useState("");
 
   const handleOk = (values: FieldType) => {
     if (!values.ticker) return;
@@ -47,6 +49,14 @@ const AddNewTickerModal: FC<AddNewTickerModalProps> = ({
         .map((currentTicker) => ({ value: currentTicker.ticker }))
         .filter((option) => option.value.startsWith(text.toUpperCase()))
     );
+  };
+
+  const handleChange = (ticker: string) => {
+    const tickerInDictionary = tickersDictionary.find(
+      (currentTicker) => currentTicker.ticker === ticker.toUpperCase()
+    );
+
+    if (tickerInDictionary) setTickerInfo(tickerInDictionary.name);
   };
 
   return (
@@ -80,8 +90,13 @@ const AddNewTickerModal: FC<AddNewTickerModalProps> = ({
             },
           ]}
         >
-          <AutoComplete options={options} onSearch={handleSearch} />
+          <AutoComplete
+            options={options}
+            onSearch={handleSearch}
+            onChange={handleChange}
+          />
         </Form.Item>
+        <div className={styles.tickerInfo}>{tickerInfo}</div>
         <Form.Item>
           <Space>
             <SubmitButton form={form}>Add</SubmitButton>
