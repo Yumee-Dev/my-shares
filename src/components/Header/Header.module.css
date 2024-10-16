@@ -13,6 +13,6 @@
   padding: 0 var(--space-xs);
 }
 
-h2 {
-  margin-top: var(--space-xs);
+.period {
+  margin-top: var(--space-n);
 }

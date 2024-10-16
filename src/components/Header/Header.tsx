@@ -28,10 +28,10 @@ const Header = forwardRef<HTMLDivElement, HeaderProps>(
             Add Ticker
           </Button>
 
-          <h2>
+          <div className={styles.period}>
             Period: <span>{formatDate(lastMonth)}</span> -&nbsp;
             <span>{formatDate(today)}</span>
-          </h2>
+          </div>
         </div>
       </header>
     );
