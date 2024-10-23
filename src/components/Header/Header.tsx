@@ -1,7 +1,6 @@
 import { forwardRef, useEffect, useState } from "react";
 import { PlusOutlined } from "@ant-design/icons";
 import { Button } from "antd";
-import debounce from "debounce";
 import cn from "classnames";
 
 import formatDate from "utils/formatDate";
@@ -19,10 +18,10 @@ const Header = forwardRef<HTMLDivElement, HeaderProps>(
     const [scrolledOut, setScrolledOut] = useState(false);
 
     useEffect(() => {
-      const handleScroll = debounce(() => {
+      const handleScroll = () => {
         if (window.scrollY > 0) setScrolledOut(true);
         else setScrolledOut(false);
-      }, 50);
+      };
 
       document.addEventListener("scroll", handleScroll);
 
