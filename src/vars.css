@@ -8,6 +8,8 @@
   --space-l: 30px;
   --space-xl: 35px;
   --space-xxl: 40px;
+  --space-3xl: 55px;
+  --space-4xl: 70px;
 
   --space-xxs-neg: -5px;
   --space-xs-neg: -10px;
@@ -17,4 +19,6 @@
   --space-l-neg: -30px;
   --space-xl-neg: -35px;
   --space-xxl-neg: -40px;
+  --space-3xl-neg: -55px;
+  --space-4xl-neg: -70px;
 }

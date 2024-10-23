@@ -1,6 +1,8 @@
-import { forwardRef } from "react";
+import { forwardRef, useEffect, useState } from "react";
 import { PlusOutlined } from "@ant-design/icons";
 import { Button } from "antd";
+import debounce from "debounce";
+import cn from "classnames";
 
 import formatDate from "utils/formatDate";
 import { lastMonth, today } from "data";
@@ -14,9 +16,24 @@ interface HeaderProps {
 
 const Header = forwardRef<HTMLDivElement, HeaderProps>(
   ({ setAddTickerModalOpen }, ref) => {
+    const [scrolledOut, setScrolledOut] = useState(false);
+
+    useEffect(() => {
+      const handleScroll = debounce(() => {
+        if (window.scrollY > 0) setScrolledOut(true);
+        else setScrolledOut(false);
+      }, 50);
+
+      document.addEventListener("scroll", handleScroll);
+
+      return () => document.removeEventListener("scroll", handleScroll);
+    }, []);
+
     return (
       <header ref={ref} className={styles.header}>
-        <div className={styles.topline}>
+        <div
+          className={cn(styles.topline, { [styles.scrolledOut]: scrolledOut })}
+        >
           <h1>myShares</h1>
         </div>
         <div className={styles.subheader}>

@@ -16,3 +16,25 @@
 .period {
   margin-top: var(--space-n);
 }
+
+@media (max-width: 768px) {
+  .topline {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    padding: var(--space-xxs);
+    font-size: 1rem;
+    text-align: center;
+    transition: font-size 0.2s;
+    z-index: 1;
+
+    &.scrolledOut {
+      font-size: 0.5rem;
+      padding: 1px;
+    }
+  }
+
+  .subheader {
+    margin-top: var(--space-4xl);
+  }
+}
