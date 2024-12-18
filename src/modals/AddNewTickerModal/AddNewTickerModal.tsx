@@ -1,11 +1,11 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Modal, Form, AutoComplete, Space, Button } from "antd";
 import useTickersStore from "stores/tickersStore";
 import SubmitButton from "./elements/SubmitButton";
 import styles from "./AddNewTickerModal.module.css";
 
 import type { FC } from "react";
-import type { AutoCompleteProps } from "antd";
+import type { AutoCompleteProps, RefSelectProps } from "antd";
 
 type FieldType = {
   ticker?: string;
@@ -30,6 +30,7 @@ const AddNewTickerModal: FC<AddNewTickerModalProps> = ({
     tickersDictionary.map((currentTicker) => ({ value: currentTicker.ticker }))
   );
   const [tickerInfo, setTickerInfo] = useState("");
+  const tickerInputRef = useRef<RefSelectProps>(null);
 
   const handleOk = (values: FieldType) => {
     if (!values.ticker) return;
@@ -66,6 +67,7 @@ const AddNewTickerModal: FC<AddNewTickerModalProps> = ({
       onCancel={handleCancel}
       footer={null}
       destroyOnClose
+      afterOpenChange={(open) => open && tickerInputRef.current?.focus()}
     >
       <Form
         name="basic"
@@ -94,6 +96,7 @@ const AddNewTickerModal: FC<AddNewTickerModalProps> = ({
             options={options}
             onSearch={handleSearch}
             onChange={handleChange}
+            ref={tickerInputRef}
           />
         </Form.Item>
         <div className={styles.tickerInfo}>{tickerInfo}</div>
