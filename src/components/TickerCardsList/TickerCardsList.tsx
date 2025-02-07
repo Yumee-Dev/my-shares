@@ -1,7 +1,14 @@
 import { useEffect, useState } from "react";
 import { Col, Row, Flex, Spin } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
-import { DndContext } from "@dnd-kit/core";
+import {
+  DndContext,
+  MouseSensor,
+  PointerSensor,
+  TouchSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
 import { SortableContext, arrayMove } from "@dnd-kit/sortable";
 
 import TickerCard from "components/TickerCard/TickerCard";
@@ -22,6 +29,16 @@ const TickerCardsList: FC = () => {
     }))
   );
   const [dragAndDropDisabled, setDragAndDropDisabled] = useState(true);
+
+  const pointerSensor = useSensor(PointerSensor, {
+    activationConstraint: {
+      distance: 0.01,
+    },
+  });
+  const mouseSensor = useSensor(MouseSensor);
+  const touchSensor = useSensor(TouchSensor);
+
+  const sensors = useSensors(mouseSensor, touchSensor, pointerSensor);
 
   function handleDragEnd(event: DragEndEvent) {
     const { active, over } = event;
@@ -69,7 +86,7 @@ const TickerCardsList: FC = () => {
 
   return (
     <div className={styles.container}>
-      <DndContext onDragEnd={handleDragEnd}>
+      <DndContext onDragEnd={handleDragEnd} sensors={sensors}>
         <SortableContext items={tickers}>
           <Row gutter={[16, 16]}>
             {tickers.map((ticker) => (
