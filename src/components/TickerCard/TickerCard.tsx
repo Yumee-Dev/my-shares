@@ -10,7 +10,7 @@ import {
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 
-import useTickersStore from "stores/tickersStore";
+import useTickersAtom from "atoms/tickersAtom";
 import formatDate from "utils/formatDate";
 
 import type { FC } from "react";
@@ -33,7 +33,7 @@ const TickerCard: FC<TickerCardProps> = ({
     transform: CSS.Transform.toString(transform),
     transition,
   };
-  const { remove } = useTickersStore((state) => state);
+  const { remove } = useTickersAtom();
 
   return (
     <Card
@@ -42,7 +42,10 @@ const TickerCard: FC<TickerCardProps> = ({
         <Button
           shape="circle"
           icon={<CloseCircleOutlined />}
-          onClick={() => remove(tickerData.ticker)}
+          onClick={() => {
+            console.log("click");
+            remove(tickerData.ticker);
+          }}
         />
       }
       ref={setNodeRef}

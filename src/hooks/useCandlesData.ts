@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import useTickersStore from "stores/tickersStore";
+import useTickersAtom from "atoms/tickersAtom";
 import useCandles from "queries/useCandles";
 import { lastMonth, today } from "data";
 
@@ -16,7 +16,7 @@ export default function useCandlesData() {
     data: [],
   });
   const prevTickersLength = useRef(0);
-  const { tickers } = useTickersStore((state) => state);
+  const { tickers } = useTickersAtom();
   const candles = useCandles({ tickers, startDate: lastMonth, endDate: today });
 
   useEffect(() => {

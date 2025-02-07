@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import { Modal, Form, AutoComplete, Space, Button } from "antd";
-import useTickersStore from "stores/tickersStore";
+import useTickersDictionaryAtom from "atoms/tickersDictionaryAtom";
+import useTickersAtom from "atoms/tickersAtom";
 import SubmitButton from "./elements/SubmitButton";
 import styles from "./AddNewTickerModal.module.css";
 
@@ -23,9 +24,8 @@ const AddNewTickerModal: FC<AddNewTickerModalProps> = ({
   onCancel,
 }) => {
   const [form] = Form.useForm();
-  const { add: addTicker, tickersDictionary } = useTickersStore(
-    (state) => state
-  );
+  const [tickersDictionary] = useTickersDictionaryAtom();
+  const { add: addTicker } = useTickersAtom();
   const [options, setOptions] = useState<AutoCompleteProps["options"]>(
     tickersDictionary.map((currentTicker) => ({ value: currentTicker.ticker }))
   );

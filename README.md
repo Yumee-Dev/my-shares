@@ -9,7 +9,7 @@
 - CSS Modules
 - Ant Design
 - Victory
-- Zustand
+- Jotai
 - Moscow Exchange ISS
 
 ## Live

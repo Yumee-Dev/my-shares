@@ -5,7 +5,7 @@ import { DndContext } from "@dnd-kit/core";
 import { SortableContext, arrayMove } from "@dnd-kit/sortable";
 
 import TickerCard from "components/TickerCard/TickerCard";
-import useTickersStore from "stores/tickersStore";
+import { useSetTickersAtom } from "atoms/tickersAtom";
 import useCandlesData from "hooks/useCandlesData";
 import styles from "./TickerCardsList.module.css";
 
@@ -13,7 +13,7 @@ import type { FC } from "react";
 import type { DragEndEvent } from "@dnd-kit/core";
 
 const TickerCardsList: FC = () => {
-  const { add, clear } = useTickersStore((state) => state);
+  const setTickersAtom = useSetTickersAtom();
   const { status, data } = useCandlesData();
   const [tickers, setTickers] = useState(
     data.map((tickerData) => ({
@@ -41,10 +41,8 @@ const TickerCardsList: FC = () => {
   useEffect(() => {
     if (tickers.length === 0) return;
 
-    clear();
-
-    add(tickers.map((ticker) => ticker.ticker));
-  }, [add, clear, tickers]);
+    setTickersAtom(tickers.map((ticker) => ticker.ticker));
+  }, [setTickersAtom, tickers]);
 
   useEffect(() => {
     setTickers(

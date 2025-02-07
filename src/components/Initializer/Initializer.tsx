@@ -1,23 +1,18 @@
 import { useEffect } from "react";
 import useTickers from "queries/useTickers";
-import getTickers from "storage/getTickers";
-import useTickersStore from "stores/tickersStore";
+import useTickersDictionaryAtom from "atoms/tickersDictionaryAtom";
 
 import type { FC } from "react";
 
 const Initializer: FC = () => {
   const tickers = useTickers();
-  const { add: addTickers, initDictionary } = useTickersStore((state) => state);
-
-  useEffect(() => {
-    addTickers(getTickers());
-  }, [addTickers]);
+  const [, setTickersDictionary] = useTickersDictionaryAtom();
 
   useEffect(() => {
     if (!tickers.data) return;
 
-    initDictionary(tickers.data);
-  }, [initDictionary, tickers.data]);
+    setTickersDictionary(tickers.data);
+  }, [setTickersDictionary, tickers.data]);
 
   return null;
 };
