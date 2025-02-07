@@ -42,10 +42,7 @@ const TickerCard: FC<TickerCardProps> = ({
         <Button
           shape="circle"
           icon={<CloseCircleOutlined />}
-          onClick={() => {
-            console.log("click");
-            remove(tickerData.ticker);
-          }}
+          onClick={() => remove(tickerData.ticker)}
         />
       }
       ref={setNodeRef}

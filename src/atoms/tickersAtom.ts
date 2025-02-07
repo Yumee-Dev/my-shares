@@ -30,7 +30,6 @@ const useTickersAtom = () => {
 
   const remove = useCallback(
     (ticker: string) => {
-      console.log("remove");
       const tickerIndex = tickers.findIndex(
         (currentTicker) => currentTicker === ticker
       );
