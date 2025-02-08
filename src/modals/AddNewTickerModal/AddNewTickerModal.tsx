@@ -36,11 +36,14 @@ const AddNewTickerModal: FC<AddNewTickerModalProps> = ({
     if (!values.ticker) return;
 
     addTicker(values.ticker.toUpperCase());
+    setTickerInfo("");
 
     if (onOk) onOk();
   };
 
   const handleCancel = () => {
+    setTickerInfo("");
+
     if (onCancel) onCancel();
   };
 
