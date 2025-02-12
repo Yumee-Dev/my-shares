@@ -1,4 +1,4 @@
-import { useAtom, useSetAtom } from "jotai";
+import { useAtom } from "jotai";
 import { atomWithStorage, createJSONStorage } from "jotai/utils";
 import { useCallback } from "react";
 
@@ -46,9 +46,7 @@ const useTickersAtom = () => {
     setTickers([]);
   }, [setTickers]);
 
-  return { tickers, add, remove, clear };
+  return { tickers, setTickers, add, remove, clear };
 };
-
-export const useSetTickersAtom = () => useSetAtom(tickersAtom);
 
 export default useTickersAtom;

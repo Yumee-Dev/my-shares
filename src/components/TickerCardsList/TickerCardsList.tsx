@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import { Col, Row, Flex, Spin } from "antd";
-import { LoadingOutlined } from "@ant-design/icons";
+import { Col, Row } from "antd";
 import {
   DndContext,
   MouseSensor,
@@ -12,22 +11,14 @@ import {
 import { SortableContext, arrayMove } from "@dnd-kit/sortable";
 
 import TickerCard from "components/TickerCard/TickerCard";
-import { useSetTickersAtom } from "atoms/tickersAtom";
-import useCandlesData from "hooks/useCandlesData";
+import useTickersAtom from "atoms/tickersAtom";
 import styles from "./TickerCardsList.module.css";
 
 import type { FC } from "react";
 import type { DragEndEvent } from "@dnd-kit/core";
 
 const TickerCardsList: FC = () => {
-  const setTickersAtom = useSetTickersAtom();
-  const { status, data } = useCandlesData();
-  const [tickers, setTickers] = useState(
-    data.map((tickerData) => ({
-      ...tickerData,
-      id: tickerData.ticker,
-    }))
-  );
+  const { tickers, setTickers } = useTickersAtom();
   const [dragAndDropDisabled, setDragAndDropDisabled] = useState(true);
 
   const pointerSensor = useSensor(PointerSensor, {
@@ -47,8 +38,8 @@ const TickerCardsList: FC = () => {
 
     if (active.id !== over.id) {
       setTickers((prev) => {
-        const oldIndex = prev.findIndex((ticker) => ticker.id === active.id);
-        const newIndex = prev.findIndex((ticker) => ticker.id === over.id);
+        const oldIndex = prev.findIndex((ticker) => ticker === active.id);
+        const newIndex = prev.findIndex((ticker) => ticker === over.id);
 
         return arrayMove(prev, oldIndex, newIndex);
       });
@@ -56,33 +47,11 @@ const TickerCardsList: FC = () => {
   }
 
   useEffect(() => {
-    if (tickers.length === 0) return;
-
-    setTickersAtom(tickers.map((ticker) => ticker.ticker));
-  }, [setTickersAtom, tickers]);
-
-  useEffect(() => {
-    setTickers(
-      data.map((tickerData) => ({
-        ...tickerData,
-        id: tickerData.ticker,
-      }))
-    );
-  }, [data]);
-
-  useEffect(() => {
     if (matchMedia("(min-width: 1200px)").matches)
       setDragAndDropDisabled(false);
   }, []);
 
-  if (status === "loading")
-    return (
-      <Flex justify="center">
-        <Spin indicator={<LoadingOutlined spin />} size="large" />
-      </Flex>
-    );
-
-  if (data.length === 0) return <div>No tickers added. Try to add one.</div>;
+  if (tickers.length === 0) return <div>No tickers added. Try to add one.</div>;
 
   return (
     <div className={styles.container}>
@@ -90,10 +59,9 @@ const TickerCardsList: FC = () => {
         <SortableContext items={tickers}>
           <Row gutter={[16, 16]}>
             {tickers.map((ticker) => (
-              <Col key={ticker.ticker} sm={24} md={12} xl={8}>
+              <Col key={ticker} sm={24} md={12} xl={8}>
                 <TickerCard
-                  id={ticker.ticker}
-                  tickerData={ticker}
+                  ticker={ticker}
                   dragAndDropDisabled={dragAndDropDisabled}
                 />
               </Col>
