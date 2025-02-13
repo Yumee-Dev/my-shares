@@ -11,6 +11,8 @@ import AddTickerButton from "components/AddTickerButton/AddTickerButton";
 import AddNewTickerModal from "modals/AddNewTickerModal/AddNewTickerModal";
 import styles from "./App.module.css";
 
+import type { Period } from "types";
+
 const queryClient = new QueryClient();
 
 function App() {
@@ -24,13 +26,18 @@ function App() {
       else setAddTickerButtonHidden(false);
     },
   });
+  const periodState = useState<Period>("month");
 
   return (
     <QueryClientProvider client={queryClient}>
       <ConfigProvider theme={{ token: { colorPrimary: "#ec9706" } }}>
         <Initializer />
-        <Header ref={ref} setAddTickerModalOpen={setAddTickerModalOpen} />
-        <TickerCardsList />
+        <Header
+          ref={ref}
+          setAddTickerModalOpen={setAddTickerModalOpen}
+          periodState={periodState}
+        />
+        <TickerCardsList period={periodState[0]} />
         <AddTickerButton
           className={cn(styles.addTickerButton, {
             [styles.hidden]: addTickerButtonHidden,

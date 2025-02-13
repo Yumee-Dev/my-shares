@@ -15,3 +15,5 @@ export type TickerInfo = {
   ticker: string;
   name: string;
 };
+
+export type Period = "week" | "month" | "year";

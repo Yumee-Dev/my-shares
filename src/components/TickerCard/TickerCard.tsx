@@ -11,18 +11,24 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 
 import useTickersAtom from "atoms/tickersAtom";
+import useCandles from "queries/useCandles";
+import getPeriodStart from "utils/getPeriodStart";
 import formatDate from "utils/formatDate";
-import { lastMonth, today } from "data";
 
 import type { FC } from "react";
-import useCandles from "queries/useCandles";
+import type { Period } from "types";
 
 interface TickerCardProps {
   ticker: string;
   dragAndDropDisabled: boolean;
+  period: Period;
 }
 
-const TickerCard: FC<TickerCardProps> = ({ ticker, dragAndDropDisabled }) => {
+const TickerCard: FC<TickerCardProps> = ({
+  ticker,
+  dragAndDropDisabled,
+  period,
+}) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: ticker, disabled: dragAndDropDisabled });
   const style = {
@@ -30,7 +36,14 @@ const TickerCard: FC<TickerCardProps> = ({ ticker, dragAndDropDisabled }) => {
     transition,
   };
   const { remove } = useTickersAtom();
-  const candles = useCandles({ ticker, startDate: lastMonth, endDate: today });
+  const periodEnd = new Date();
+  const periodStart = getPeriodStart(periodEnd, period);
+  const candles = useCandles({
+    ticker,
+    startDate: periodStart,
+    endDate: periodEnd,
+    period,
+  });
 
   if (!candles.isSuccess)
     return (

@@ -1,18 +1,19 @@
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
 import getCandles from "api/getCandles";
 
-import type { Candle } from "types";
+import type { Candle, Period } from "types";
 
 interface UseCandlesParams {
   startDate: Date;
   endDate: Date;
+  period: Period;
   ticker: string;
 }
 
 export default function useCandles(
   params: UseCandlesParams
 ): UseQueryResult<Candle[]> {
-  const { startDate, endDate, ticker } = params;
+  const { startDate, endDate, period, ticker } = params;
 
   return useQuery({
     queryKey: [
@@ -20,9 +21,12 @@ export default function useCandles(
       ticker,
       startDate.toDateString(),
       endDate.toDateString(),
+      period,
     ],
-    queryFn: () => getCandles({ ticker, startDate, endDate }),
+    queryFn: () => getCandles({ ticker, startDate, endDate, period }),
     select: (rawData) =>
+      // TODO: Add collapsing for weekly
+
       rawData.candles.data.map((rawCandle) => {
         const [open, close, high, low] = rawCandle;
 

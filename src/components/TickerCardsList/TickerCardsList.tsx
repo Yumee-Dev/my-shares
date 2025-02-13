@@ -16,8 +16,13 @@ import styles from "./TickerCardsList.module.css";
 
 import type { FC } from "react";
 import type { DragEndEvent } from "@dnd-kit/core";
+import type { Period } from "types";
 
-const TickerCardsList: FC = () => {
+interface TickerCardsListProps {
+  period: Period;
+}
+
+const TickerCardsList: FC<TickerCardsListProps> = ({ period }) => {
   const { tickers, setTickers } = useTickersAtom();
   const [dragAndDropDisabled, setDragAndDropDisabled] = useState(true);
 
@@ -63,6 +68,7 @@ const TickerCardsList: FC = () => {
                 <TickerCard
                   ticker={ticker}
                   dragAndDropDisabled={dragAndDropDisabled}
+                  period={period}
                 />
               </Col>
             ))}
