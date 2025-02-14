@@ -9,17 +9,53 @@ import formatDate from "utils/formatDate";
 import styles from "./Header.module.css";
 
 import type { Dispatch, SetStateAction } from "react";
+import type { Period } from "types";
 
 interface HeaderProps {
   setAddTickerModalOpen: Dispatch<SetStateAction<boolean>>;
 }
 
+const periodsLabelsMediaQuery = "(min-width: 400px)";
+const shortPeriodsLabels: Record<Period, string> = {
+  week: "Wk",
+  month: "Mo",
+  year: "Yr",
+};
+const fullPeriodsLabels: Record<Period, string> = {
+  week: "Week",
+  month: "Month",
+  year: "Year",
+};
+
 const Header = forwardRef<HTMLDivElement, HeaderProps>(
   ({ setAddTickerModalOpen }, ref) => {
     const [scrolledOut, setScrolledOut] = useState(false);
+    const [periodsLabels, setPeriodsLabels] = useState(
+      matchMedia(periodsLabelsMediaQuery).matches
+        ? fullPeriodsLabels
+        : shortPeriodsLabels
+    );
     const [period, setPeriod] = usePeriodAtom();
     const periodEnd = new Date();
     const periodStart = getPeriodStart(periodEnd, period);
+
+    useEffect(() => {
+      const handleChangeMatchMedia = (event: MediaQueryListEvent) => {
+        if (event.matches) setPeriodsLabels(fullPeriodsLabels);
+        else setPeriodsLabels(shortPeriodsLabels);
+      };
+
+      matchMedia(periodsLabelsMediaQuery).addEventListener(
+        "change",
+        handleChangeMatchMedia
+      );
+
+      return () =>
+        matchMedia(periodsLabelsMediaQuery).removeEventListener(
+          "change",
+          handleChangeMatchMedia
+        );
+    }, []);
 
     useEffect(() => {
       const handleScroll = () => {
@@ -50,9 +86,15 @@ const Header = forwardRef<HTMLDivElement, HeaderProps>(
             </Button>
 
             <Flex justify="space-between" gap="small">
-              <Button onClick={() => setPeriod("week")}>Week</Button>
-              <Button onClick={() => setPeriod("month")}>Month</Button>
-              <Button onClick={() => setPeriod("year")}>Year</Button>
+              <Button onClick={() => setPeriod("week")}>
+                {periodsLabels.week}
+              </Button>
+              <Button onClick={() => setPeriod("month")}>
+                {periodsLabels.month}
+              </Button>
+              <Button onClick={() => setPeriod("year")}>
+                {periodsLabels.year}
+              </Button>
             </Flex>
           </Flex>
 

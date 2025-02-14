@@ -17,9 +17,13 @@ import styles from "./TickerCardsList.module.css";
 import type { FC } from "react";
 import type { DragEndEvent } from "@dnd-kit/core";
 
+const dragAndDropMediaQuery = "(min-width: 1200px)";
+
 const TickerCardsList: FC = () => {
   const { tickers, setTickers } = useTickersAtom();
-  const [dragAndDropDisabled, setDragAndDropDisabled] = useState(true);
+  const [dragAndDropDisabled, setDragAndDropDisabled] = useState(
+    !matchMedia(dragAndDropMediaQuery).matches
+  );
 
   const pointerSensor = useSensor(PointerSensor, {
     activationConstraint: {
@@ -47,8 +51,21 @@ const TickerCardsList: FC = () => {
   }
 
   useEffect(() => {
-    if (matchMedia("(min-width: 1200px)").matches)
-      setDragAndDropDisabled(false);
+    const handleChangeMatchMedia = (event: MediaQueryListEvent) => {
+      if (event.matches) setDragAndDropDisabled(false);
+      else setDragAndDropDisabled(true);
+    };
+
+    matchMedia(dragAndDropMediaQuery).addEventListener(
+      "change",
+      handleChangeMatchMedia
+    );
+
+    return () =>
+      matchMedia(dragAndDropMediaQuery).removeEventListener(
+        "change",
+        handleChangeMatchMedia
+      );
   }, []);
 
   if (tickers.length === 0) return <div>No tickers added. Try to add one.</div>;
