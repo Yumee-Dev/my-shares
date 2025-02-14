@@ -3,22 +3,21 @@ import { PlusOutlined } from "@ant-design/icons";
 import { Button, Flex } from "antd";
 import cn from "classnames";
 
+import usePeriodAtom from "atoms/periodAtom";
 import getPeriodStart from "utils/getPeriodStart";
 import formatDate from "utils/formatDate";
 import styles from "./Header.module.css";
 
 import type { Dispatch, SetStateAction } from "react";
-import type { Period } from "types";
 
 interface HeaderProps {
   setAddTickerModalOpen: Dispatch<SetStateAction<boolean>>;
-  periodState: [Period, Dispatch<SetStateAction<Period>>];
 }
 
 const Header = forwardRef<HTMLDivElement, HeaderProps>(
-  ({ setAddTickerModalOpen, periodState }, ref) => {
+  ({ setAddTickerModalOpen }, ref) => {
     const [scrolledOut, setScrolledOut] = useState(false);
-    const [period, setPeriod] = periodState;
+    const [period, setPeriod] = usePeriodAtom();
     const periodEnd = new Date();
     const periodStart = getPeriodStart(periodEnd, period);
 
