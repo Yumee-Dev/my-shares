@@ -10,7 +10,7 @@ interface UseCandlesParams {
   ticker: string;
 }
 
-const COLLAPSED_HOURS = 3;
+const COLLAPSED_HOURS = 6;
 
 export default function useCandles(
   params: UseCandlesParams

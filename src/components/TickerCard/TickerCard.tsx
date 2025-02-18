@@ -93,6 +93,7 @@ const TickerCard: FC<TickerCardProps> = ({ ticker, dragAndDropDisabled }) => {
           labels={() => ""}
           x="date"
           candleColors={{ positive: "#7fab0f", negative: "#c9574b" }}
+          candleWidth={period === "year" ? 14 : 8}
           labelComponent={<VictoryTooltip />}
         />
       </VictoryChart>
