@@ -7,6 +7,7 @@ import {
   TouchSensor,
   useSensor,
   useSensors,
+  MeasuringStrategy,
 } from "@dnd-kit/core";
 import { SortableContext, arrayMove } from "@dnd-kit/sortable";
 
@@ -19,12 +20,22 @@ import type { DragEndEvent } from "@dnd-kit/core";
 
 const dragAndDropMediaQuery = "(min-width: 1200px)";
 
+// Set up ticker removing animation
+// https://github.com/clauderic/dnd-kit/discussions/108#discussioncomment-524987
+const measuringConfig = {
+  droppable: {
+    strategy: MeasuringStrategy.Always,
+  },
+};
+
 const TickerCardsList: FC = () => {
   const { tickers, setTickers } = useTickersAtom();
   const [dragAndDropDisabled, setDragAndDropDisabled] = useState(
     !matchMedia(dragAndDropMediaQuery).matches
   );
 
+  // Configure sensors not to intercept clicking on remove ticker button
+  // https://github.com/clauderic/dnd-kit/issues/591#issuecomment-1873964687
   const pointerSensor = useSensor(PointerSensor, {
     activationConstraint: {
       distance: 0.01,
@@ -72,7 +83,11 @@ const TickerCardsList: FC = () => {
 
   return (
     <div className={styles.container}>
-      <DndContext onDragEnd={handleDragEnd} sensors={sensors}>
+      <DndContext
+        onDragEnd={handleDragEnd}
+        sensors={sensors}
+        measuring={measuringConfig}
+      >
         <SortableContext items={tickers}>
           <Row gutter={[16, 16]}>
             {tickers.map((ticker) => (

@@ -7,7 +7,7 @@ import {
   VictoryTooltip,
   VictoryContainer,
 } from "victory";
-import { useSortable } from "@dnd-kit/sortable";
+import { useSortable, defaultAnimateLayoutChanges } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 
 import useTickersAtom from "atoms/tickersAtom";
@@ -18,14 +18,34 @@ import formatDate from "utils/formatDate";
 
 import type { FC } from "react";
 
+type DefaultAnimateLayoutChangesParams = Parameters<
+  typeof defaultAnimateLayoutChanges
+>[0];
+
 interface TickerCardProps {
   ticker: string;
   dragAndDropDisabled: boolean;
 }
 
+// Set up ticker removing animation
+// https://github.com/clauderic/dnd-kit/discussions/108#discussioncomment-4305184
+function animateLayoutChanges(args: DefaultAnimateLayoutChangesParams) {
+  const { isSorting, wasDragging } = args;
+
+  if (isSorting || wasDragging) {
+    return defaultAnimateLayoutChanges(args);
+  }
+
+  return true;
+}
+
 const TickerCard: FC<TickerCardProps> = ({ ticker, dragAndDropDisabled }) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id: ticker, disabled: dragAndDropDisabled });
+    useSortable({
+      id: ticker,
+      disabled: dragAndDropDisabled,
+      animateLayoutChanges,
+    });
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
