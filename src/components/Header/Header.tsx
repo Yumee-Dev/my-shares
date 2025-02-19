@@ -86,13 +86,22 @@ const Header = forwardRef<HTMLDivElement, HeaderProps>(
             </Button>
 
             <Flex justify="space-between" gap="small">
-              <Button onClick={() => setPeriod("week")}>
+              <Button
+                className={cn({ [styles.periodButton]: period === "week" })}
+                onClick={() => setPeriod("week")}
+              >
                 {periodsLabels.week}
               </Button>
-              <Button onClick={() => setPeriod("month")}>
+              <Button
+                className={cn({ [styles.periodButton]: period === "month" })}
+                onClick={() => setPeriod("month")}
+              >
                 {periodsLabels.month}
               </Button>
-              <Button onClick={() => setPeriod("year")}>
+              <Button
+                className={cn({ [styles.periodButton]: period === "year" })}
+                onClick={() => setPeriod("year")}
+              >
                 {periodsLabels.year}
               </Button>
             </Flex>

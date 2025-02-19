@@ -17,6 +17,11 @@
   margin-top: var(--space-n);
 }
 
+.periodButton {
+  color: #fab62f;
+  border-color: #fab62f;
+}
+
 @media (max-width: 768px) {
   .topline {
     position: fixed;
