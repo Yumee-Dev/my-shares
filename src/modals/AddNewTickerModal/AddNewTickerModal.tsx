@@ -27,7 +27,7 @@ const AddNewTickerModal: FC<AddNewTickerModalProps> = ({
   const [tickersDictionary] = useTickersDictionaryAtom();
   const { add: addTicker } = useTickersAtom();
   const [options, setOptions] = useState<AutoCompleteProps["options"]>(
-    tickersDictionary.map((currentTicker) => ({ value: currentTicker.ticker }))
+    tickersDictionary.map((currentTicker) => ({ value: currentTicker.ticker })),
   );
   const [tickerInfo, setTickerInfo] = useState("");
   const tickerInputRef = useRef<RefSelectProps>(null);
@@ -51,13 +51,13 @@ const AddNewTickerModal: FC<AddNewTickerModalProps> = ({
     setOptions(
       tickersDictionary
         .map((currentTicker) => ({ value: currentTicker.ticker }))
-        .filter((option) => option.value.startsWith(text.toUpperCase()))
+        .filter((option) => option.value.startsWith(text.toUpperCase())),
     );
   };
 
   const handleChange = (ticker: string) => {
     const tickerInDictionary = tickersDictionary.find(
-      (currentTicker) => currentTicker.ticker === ticker.toUpperCase()
+      (currentTicker) => currentTicker.ticker === ticker.toUpperCase(),
     );
 
     if (tickerInDictionary) setTickerInfo(tickerInDictionary.name);
@@ -89,7 +89,7 @@ const AddNewTickerModal: FC<AddNewTickerModalProps> = ({
               required: true,
               min: 2,
               pattern: new RegExp(
-                `${tickersDictionary.map((ticker) => ticker.ticker).join("|")}`
+                `${tickersDictionary.map((ticker) => ticker.ticker).join("|")}`,
               ),
               message: "Please input a ticker!",
             },

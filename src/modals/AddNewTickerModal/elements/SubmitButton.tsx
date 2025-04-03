@@ -17,6 +17,7 @@ const SubmitButton: FC<PropsWithChildren<SubmitButtonProps>> = ({
   // Watch all values
   const values = Form.useWatch([], form);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <We need to call effect on every values change>
   useEffect(() => {
     form
       .validateFields({ validateOnly: true })

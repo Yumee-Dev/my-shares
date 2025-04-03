@@ -9,9 +9,9 @@ export default function useTickers() {
     select: (data) => {
       const tickersMap: Map<string, string> = new Map();
 
-      data.securities.data.forEach((raw) => {
+      for (const raw of data.securities.data) {
         tickersMap.set(raw[0], raw[9]);
-      });
+      }
 
       return Array.from(tickersMap).map(([key, value]) => ({
         ticker: key,

@@ -6,7 +6,7 @@ export default function getPeriodStart(periodEnd: Date, period: Period) {
       periodEnd.getFullYear(),
       periodEnd.getMonth(),
       periodEnd.getDate() - 7,
-      periodEnd.getHours()
+      periodEnd.getHours(),
     );
 
   if (period === "month")
@@ -14,13 +14,13 @@ export default function getPeriodStart(periodEnd: Date, period: Period) {
       periodEnd.getFullYear(),
       periodEnd.getMonth(),
       periodEnd.getDate() - 30,
-      periodEnd.getHours()
+      periodEnd.getHours(),
     );
 
   return new Date(
     periodEnd.getFullYear(),
     periodEnd.getMonth(),
     periodEnd.getDate() - 365,
-    periodEnd.getHours()
+    periodEnd.getHours(),
   );
 }

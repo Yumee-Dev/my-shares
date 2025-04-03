@@ -16,7 +16,7 @@ export interface TickersRawData {
       string,
       string,
       number,
-      string
+      string,
     ][];
   };
 }

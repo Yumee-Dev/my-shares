@@ -6,7 +6,7 @@ const tickersAtom = atomWithStorage(
   "tickers",
   ["SBER", "MGNT", "TATN"],
   createJSONStorage(() => localStorage),
-  { getOnInit: true }
+  { getOnInit: true },
 );
 
 const useTickersAtom = () => {
@@ -19,27 +19,27 @@ const useTickersAtom = () => {
 
       if (Array.isArray(ticker)) {
         const newTickers = ticker.filter(
-          (currentTicker) => !tickers.includes(currentTicker)
+          (currentTicker) => !tickers.includes(currentTicker),
         );
 
         if (newTickers.length > 0) setTickers([...tickers, ...newTickers]);
       }
     },
-    [setTickers, tickers]
+    [setTickers, tickers],
   );
 
   const remove = useCallback(
     (ticker: string) => {
       const tickerIndex = tickers.findIndex(
-        (currentTicker) => currentTicker === ticker
+        (currentTicker) => currentTicker === ticker,
       );
 
       if (tickerIndex >= 0)
         setTickers(
-          tickers.slice(0, tickerIndex).concat(tickers.slice(tickerIndex + 1))
+          tickers.slice(0, tickerIndex).concat(tickers.slice(tickerIndex + 1)),
         );
     },
-    [setTickers, tickers]
+    [setTickers, tickers],
   );
 
   const clear = useCallback(() => {

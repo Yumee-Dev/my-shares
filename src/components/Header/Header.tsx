@@ -33,7 +33,7 @@ const Header = forwardRef<HTMLDivElement, HeaderProps>(
     const [periodsLabels, setPeriodsLabels] = useState(
       matchMedia(periodsLabelsMediaQuery).matches
         ? fullPeriodsLabels
-        : shortPeriodsLabels
+        : shortPeriodsLabels,
     );
     const [period, setPeriod] = usePeriodAtom();
     const periodEnd = new Date();
@@ -47,13 +47,13 @@ const Header = forwardRef<HTMLDivElement, HeaderProps>(
 
       matchMedia(periodsLabelsMediaQuery).addEventListener(
         "change",
-        handleChangeMatchMedia
+        handleChangeMatchMedia,
       );
 
       return () =>
         matchMedia(periodsLabelsMediaQuery).removeEventListener(
           "change",
-          handleChangeMatchMedia
+          handleChangeMatchMedia,
         );
     }, []);
 
@@ -114,7 +114,7 @@ const Header = forwardRef<HTMLDivElement, HeaderProps>(
         </div>
       </header>
     );
-  }
+  },
 );
 
 export default Header;

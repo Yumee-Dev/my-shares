@@ -1,6 +1,7 @@
-import { useQuery, UseQueryResult } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import getCandles from "api/getCandles";
 
+import type { UseQueryResult } from "@tanstack/react-query";
 import type { Candle, Period } from "types";
 
 interface UseCandlesParams {
@@ -13,7 +14,7 @@ interface UseCandlesParams {
 const COLLAPSED_HOURS = 6;
 
 export default function useCandles(
-  params: UseCandlesParams
+  params: UseCandlesParams,
 ): UseQueryResult<Candle[]> {
   const { startDate, endDate, period, ticker } = params;
 
@@ -48,12 +49,12 @@ export default function useCandles(
         const high = Math.max(
           ...candles
             .slice(i - COLLAPSED_HOURS + 1, i + 1)
-            .map((candle) => candle.high)
+            .map((candle) => candle.high),
         );
         const low = Math.min(
           ...candles
             .slice(i - COLLAPSED_HOURS + 1, i + 1)
-            .map((candle) => candle.low)
+            .map((candle) => candle.low),
         );
 
         result.unshift({ date, open, close, high, low });
