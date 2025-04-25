@@ -15,6 +15,7 @@ import usePeriodAtom from "atoms/periodAtom";
 import useCandles from "queries/useCandles";
 import getPeriodStart from "utils/getPeriodStart";
 import formatDate from "utils/formatDate";
+import styles from "./TickerCard.module.css";
 
 import type { FC } from "react";
 
@@ -61,13 +62,6 @@ const TickerCard: FC<TickerCardProps> = ({ ticker, dragAndDropDisabled }) => {
     period,
   });
 
-  if (!candles.isSuccess)
-    return (
-      <Flex justify="center">
-        <Spin indicator={<LoadingOutlined spin />} />
-      </Flex>
-    );
-
   return (
     <Card
       title={ticker}
@@ -83,40 +77,54 @@ const TickerCard: FC<TickerCardProps> = ({ ticker, dragAndDropDisabled }) => {
       {...attributes}
       {...listeners}
     >
-      <VictoryChart
-        domainPadding={10}
-        containerComponent={
-          <VictoryContainer
-            style={{
-              touchAction: "auto",
-            }}
+      {candles.isError && (
+        <Flex justify="center">
+          <span className={styles.errorMessage}>Error fetching data</span>
+        </Flex>
+      )}
+
+      {candles.isPending && (
+        <Flex justify="center">
+          <Spin indicator={<LoadingOutlined spin />} />
+        </Flex>
+      )}
+
+      {candles.isSuccess && (
+        <VictoryChart
+          domainPadding={10}
+          containerComponent={
+            <VictoryContainer
+              style={{
+                touchAction: "auto",
+              }}
+            />
+          }
+        >
+          <VictoryAxis
+            tickFormat={(t: number) => formatDate(t)}
+            style={{ tickLabels: { fontSize: 10, padding: 5 } }}
           />
-        }
-      >
-        <VictoryAxis
-          tickFormat={(t: number) => formatDate(t)}
-          style={{ tickLabels: { fontSize: 10, padding: 5 } }}
-        />
-        <VictoryAxis
-          dependentAxis
-          style={{ tickLabels: { fontSize: 10, padding: 5 } }}
-        />
-        <VictoryCandlestick
-          data={candles.data.map((candle) => ({
-            ...candle,
-            label: `${formatDate(candle.date)}\n${" "}\nOpen: ${
-              candle.open
-            }\nClose: ${candle.close}\nHigh: ${candle.high}\nLow: ${
-              candle.low
-            }`,
-          }))}
-          labels={() => ""}
-          x="date"
-          candleColors={{ positive: "#7fab0f", negative: "#c9574b" }}
-          candleWidth={period === "year" ? 14 : 8}
-          labelComponent={<VictoryTooltip />}
-        />
-      </VictoryChart>
+          <VictoryAxis
+            dependentAxis
+            style={{ tickLabels: { fontSize: 10, padding: 5 } }}
+          />
+          <VictoryCandlestick
+            data={candles.data.map((candle) => ({
+              ...candle,
+              label: `${formatDate(candle.date)}\n${" "}\nOpen: ${
+                candle.open
+              }\nClose: ${candle.close}\nHigh: ${candle.high}\nLow: ${
+                candle.low
+              }`,
+            }))}
+            labels={() => ""}
+            x="date"
+            candleColors={{ positive: "#7fab0f", negative: "#c9574b" }}
+            candleWidth={period === "year" ? 14 : 8}
+            labelComponent={<VictoryTooltip />}
+          />
+        </VictoryChart>
+      )}
     </Card>
   );
 };

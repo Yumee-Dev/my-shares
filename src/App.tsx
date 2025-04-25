@@ -11,7 +11,13 @@ import AddTickerButton from "components/AddTickerButton/AddTickerButton";
 import AddNewTickerModal from "modals/AddNewTickerModal/AddNewTickerModal";
 import styles from "./App.module.css";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 1,
+    },
+  },
+});
 
 function App() {
   const [addTickerModalOpen, setAddTickerModalOpen] = useState(false);
