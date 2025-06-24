@@ -11,7 +11,7 @@ import {
 } from "@dnd-kit/core";
 import { SortableContext, arrayMove } from "@dnd-kit/sortable";
 
-import TickerCard from "components/TickerCard/TickerCard";
+import TickerCard from "components/TickerCard";
 import useTickersAtom from "atoms/tickersAtom";
 import styles from "./TickerCardsList.module.css";
 
@@ -31,7 +31,7 @@ const measuringConfig = {
 const TickerCardsList: FC = () => {
   const { tickers, setTickers } = useTickersAtom();
   const [dragAndDropDisabled, setDragAndDropDisabled] = useState(
-    !matchMedia(dragAndDropMediaQuery).matches,
+    !matchMedia(dragAndDropMediaQuery).matches
   );
 
   // Configure sensors not to intercept clicking on remove ticker button
@@ -69,13 +69,13 @@ const TickerCardsList: FC = () => {
 
     matchMedia(dragAndDropMediaQuery).addEventListener(
       "change",
-      handleChangeMatchMedia,
+      handleChangeMatchMedia
     );
 
     return () =>
       matchMedia(dragAndDropMediaQuery).removeEventListener(
         "change",
-        handleChangeMatchMedia,
+        handleChangeMatchMedia
       );
   }, []);
 

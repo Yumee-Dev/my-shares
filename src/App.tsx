@@ -4,11 +4,11 @@ import { ConfigProvider } from "antd";
 import { useInView } from "react-intersection-observer";
 import cn from "classnames";
 
-import Initializer from "components/Initializer/Initializer";
-import Header from "components/Header/Header";
-import TickerCardsList from "components/TickerCardsList/TickerCardsList";
-import AddTickerButton from "components/AddTickerButton/AddTickerButton";
-import AddNewTickerModal from "modals/AddNewTickerModal/AddNewTickerModal";
+import Initializer from "components/Initializer";
+import Header from "components/Header";
+import TickerCardsList from "components/TickerCardsList";
+import AddTickerButton from "components/AddTickerButton";
+import AddNewTickerModal from "modals/AddNewTickerModal";
 import styles from "./App.module.css";
 
 const queryClient = new QueryClient({
